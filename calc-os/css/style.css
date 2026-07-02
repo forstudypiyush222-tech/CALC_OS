@@ -1,0 +1,862 @@
+/* 1. Custom Properties (Theme Tokens) */
+:root {
+    /* Spacing Tokens */
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 32px;
+    --space-xl: 48px;
+
+    /* Dark Mode (Default) */
+    --bg-main: #0B1020;
+    --bg-gradient-1: radial-gradient(circle at 85% 40%, rgba(2, 107, 210, 0.25) 0%, transparent 65%);
+    --bg-gradient-2: radial-gradient(circle at 50% 100%, rgba(194, 42, 255, 0.15) 0%, transparent 60%);
+    --bg-gradient-3: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.5) 100%);
+    
+    --text-number: #ffffff;
+    --text-expression: rgba(229, 226, 227, 0.6);
+    --text-header: rgba(229, 226, 227, 0.9);
+    
+    --glass-bg-start: rgba(255, 255, 255, 0.08);
+    --glass-bg-end: rgba(255, 255, 255, 0.01);
+    --glass-border-top: rgba(255, 255, 255, 0.15);
+    --glass-border-left: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    
+    --btn-bg-start: rgba(255, 255, 255, 0.1);
+    --btn-bg-end: rgba(255, 255, 255, 0.03);
+    --btn-border-top: rgba(255, 255, 255, 0.15);
+    --btn-border-left: rgba(255, 255, 255, 0.05);
+    --btn-shadow: 0 8px 16px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    
+    --btn-hover-bg-start: rgba(255, 255, 255, 0.12);
+    --btn-hover-bg-end: rgba(255, 255, 255, 0.05);
+    --btn-hover-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    --btn-active-bg-start: rgba(255, 255, 255, 0.04);
+    --btn-active-bg-end: rgba(255, 255, 255, 0.01);
+    --btn-active-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 4px 12px rgba(0, 0, 0, 0.3);
+    
+    --op-divide-bg-start: rgba(160, 140, 255, 0.2);
+    --op-divide-bg-end: rgba(160, 140, 255, 0.05);
+    --op-divide-border: rgba(160, 140, 255, 0.3);
+    --op-divide-text: #d0c4ff;
+    
+    --op-multiply-bg-start: rgba(190, 120, 255, 0.2);
+    --op-multiply-bg-end: rgba(190, 120, 255, 0.05);
+    --op-multiply-border: rgba(190, 120, 255, 0.3);
+    --op-multiply-text: #e6c4ff;
+    
+    --op-minus-bg-start: rgba(210, 150, 255, 0.2);
+    --op-minus-bg-end: rgba(210, 150, 255, 0.05);
+    --op-minus-border: rgba(210, 150, 255, 0.3);
+    --op-minus-text: #f0c4ff;
+    
+    --op-plus-bg-start: rgba(170, 90, 255, 0.25);
+    --op-plus-bg-end: rgba(170, 90, 255, 0.1);
+    --op-plus-border: rgba(170, 90, 255, 0.35);
+    --op-plus-text: #dfb4ff;
+    
+    --op-text-shadow: 0 0 12px rgba(216, 132, 255, 0.4);
+    
+    --ac-bg-start: rgba(255, 120, 100, 0.18);
+    --ac-bg-end: rgba(255, 120, 100, 0.05);
+    --ac-border: rgba(255, 120, 100, 0.25);
+    --ac-text: #ff8c7a;
+    
+    --backspace-bg-start: rgba(255, 180, 50, 0.15);
+    --backspace-bg-end: rgba(255, 180, 50, 0.05);
+    --backspace-border: rgba(255, 180, 50, 0.25);
+    --backspace-text: #ffb833;
+    
+    --percent-bg-start: rgba(170, 199, 255, 0.15);
+    --percent-bg-end: rgba(170, 199, 255, 0.05);
+    --percent-border: rgba(170, 199, 255, 0.25);
+    --percent-text: #aac7ff;
+    
+    --hero-bg-start: #1886f7;
+    --hero-bg-end: #0352a8;
+    --hero-hover-bg-start: #2a94fb;
+    --hero-hover-bg-end: #045bb9;
+    --hero-text: #ffffff;
+    --hero-shadow: 0 12px 24px rgba(2, 107, 210, 0.5), 0 4px 8px rgba(2, 107, 210, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    --hero-hover-shadow: 0 16px 32px rgba(2, 107, 210, 0.6), 0 8px 16px rgba(2, 107, 210, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    --hero-pulse-shadow-1: 0 8px 24px rgba(2, 107, 210, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    --hero-pulse-shadow-2: 0 12px 32px rgba(2, 107, 210, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    
+    --header-btn-bg-start: rgba(255, 255, 255, 0.08);
+    --header-btn-bg-end: rgba(255, 255, 255, 0.02);
+    --header-btn-border: rgba(255, 255, 255, 0.1);
+    --header-btn-border-top: rgba(255, 255, 255, 0.2);
+    --header-btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --header-btn-hover-bg-start: rgba(255, 255, 255, 0.12);
+    --header-btn-hover-bg-end: rgba(255, 255, 255, 0.04);
+    --header-btn-hover-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    
+    --display-glow-start: rgba(2, 107, 210, 0.15);
+    --display-glow-end: rgba(194, 42, 255, 0.1);
+    
+    --noise-blend-mode: overlay;
+    --vignette-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+    --center-radial-bg: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+    --display-vignette: block;
+    
+    --history-panel-bg-start: rgba(8, 16, 35, 0.85);
+    --history-panel-bg-end: rgba(5, 10, 20, 0.95);
+    --history-panel-border: rgba(255, 255, 255, 0.1);
+    --history-panel-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    
+    --history-card-bg-start: rgba(255, 255, 255, 0.06);
+    --history-card-bg-end: rgba(255, 255, 255, 0.02);
+    --history-card-border: rgba(255, 255, 255, 0.1);
+    --history-card-border-left: rgba(255, 255, 255, 0.05);
+    --history-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    --history-card-result: #ffffff;
+    --history-card-expression: rgba(229, 226, 227, 0.6);
+    
+    --drag-handle-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+    --drag-handle-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    
+    --backdrop-bg: rgba(11, 16, 32, 0.8);
+}
+
+body.light {
+    --bg-main: #F8FAFC;
+    --bg-gradient-1: radial-gradient(circle at 85% 40%, rgba(59, 114, 217, 0.1) 0%, transparent 65%);
+    --bg-gradient-2: radial-gradient(circle at 50% 100%, rgba(122, 59, 153, 0.05) 0%, transparent 60%);
+    --bg-gradient-3: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8) 30%, rgba(242, 245, 250, 0.9) 100%);
+    
+    --text-number: #1F2937;
+    --text-expression: #6B7280;
+    --text-header: rgba(31, 41, 55, 0.9);
+    
+    --glass-bg-start: rgba(255, 255, 255, 0.8);
+    --glass-bg-end: rgba(255, 255, 255, 0.5);
+    --glass-border-top: rgba(255, 255, 255, 0.6);
+    --glass-border-left: rgba(255, 255, 255, 0.6);
+    --glass-shadow: 0 24px 48px rgba(0, 0, 0, 0.05), 0 10px 20px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    
+    --btn-bg-start: rgba(255, 255, 255, 0.8);
+    --btn-bg-end: rgba(255, 255, 255, 0.5);
+    --btn-border-top: rgba(255, 255, 255, 0.6);
+    --btn-border-left: rgba(255, 255, 255, 0.6);
+    --btn-shadow: 0 8px 16px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    
+    --btn-hover-bg-start: rgba(255, 255, 255, 0.9);
+    --btn-hover-bg-end: rgba(255, 255, 255, 0.6);
+    --btn-hover-shadow: 0 12px 20px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    --btn-active-bg-start: rgba(255, 255, 255, 0.5);
+    --btn-active-bg-end: rgba(255, 255, 255, 0.3);
+    --btn-active-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), inset 0 4px 12px rgba(0, 0, 0, 0.05);
+    
+    --op-light-bg-start: rgba(235, 240, 255, 0.8);
+    --op-light-bg-end: rgba(220, 230, 255, 0.5);
+    --op-light-border: rgba(235, 240, 255, 0.8);
+    --op-light-text: #3B72D9;
+    
+    --op-divide-bg-start: var(--op-light-bg-start);
+    --op-divide-bg-end: var(--op-light-bg-end);
+    --op-divide-border: var(--op-light-border);
+    --op-divide-text: var(--op-light-text);
+    
+    --op-multiply-bg-start: var(--op-light-bg-start);
+    --op-multiply-bg-end: var(--op-light-bg-end);
+    --op-multiply-border: var(--op-light-border);
+    --op-multiply-text: var(--op-light-text);
+    
+    --op-minus-bg-start: var(--op-light-bg-start);
+    --op-minus-bg-end: var(--op-light-bg-end);
+    --op-minus-border: var(--op-light-border);
+    --op-minus-text: var(--op-light-text);
+    
+    --op-plus-bg-start: var(--op-light-bg-start);
+    --op-plus-bg-end: var(--op-light-bg-end);
+    --op-plus-border: var(--op-light-border);
+    --op-plus-text: var(--op-light-text);
+    
+    --op-text-shadow: none;
+    
+    --func-light-bg-start: rgba(255, 255, 255, 0.8);
+    --func-light-bg-end: rgba(255, 255, 255, 0.5);
+    --func-light-border: rgba(255, 255, 255, 0.6);
+    
+    --ac-bg-start: var(--func-light-bg-start);
+    --ac-bg-end: var(--func-light-bg-end);
+    --ac-border: var(--func-light-border);
+    --ac-text: #E05242;
+    
+    --backspace-bg-start: var(--func-light-bg-start);
+    --backspace-bg-end: var(--func-light-bg-end);
+    --backspace-border: var(--func-light-border);
+    --backspace-text: #D9821B;
+    
+    --percent-bg-start: var(--func-light-bg-start);
+    --percent-bg-end: var(--func-light-bg-end);
+    --percent-border: var(--func-light-border);
+    --percent-text: #3B72D9;
+    
+    --hero-shadow: 0 12px 24px rgba(2, 107, 210, 0.3), 0 4px 8px rgba(2, 107, 210, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    --hero-hover-shadow: 0 16px 32px rgba(2, 107, 210, 0.4), 0 8px 16px rgba(2, 107, 210, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    --hero-pulse-shadow-1: 0 8px 24px rgba(2, 107, 210, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    --hero-pulse-shadow-2: 0 12px 32px rgba(2, 107, 210, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    
+    --header-btn-bg-start: rgba(255, 255, 255, 0.8);
+    --header-btn-bg-end: rgba(255, 255, 255, 0.5);
+    --header-btn-border: rgba(255, 255, 255, 0.6);
+    --header-btn-border-top: rgba(255, 255, 255, 0.6);
+    --header-btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --header-btn-hover-bg-start: rgba(255, 255, 255, 0.9);
+    --header-btn-hover-bg-end: rgba(255, 255, 255, 0.6);
+    --header-btn-hover-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    
+    --display-glow-start: transparent;
+    --display-glow-end: transparent;
+    
+    --noise-blend-mode: multiply;
+    --vignette-shadow: none;
+    --center-radial-bg: transparent;
+    --display-vignette: none;
+    
+    --history-panel-bg-start: rgba(255, 255, 255, 0.9);
+    --history-panel-bg-end: rgba(255, 255, 255, 0.7);
+    --history-panel-border: rgba(255, 255, 255, 0.8);
+    --history-panel-shadow: 0 -24px 64px rgba(0, 0, 0, 0.08), 0 -12px 24px rgba(0, 0, 0, 0.03), inset 0 1px 3px rgba(255, 255, 255, 1);
+    
+    --history-card-bg-start: rgba(255, 255, 255, 0.7);
+    --history-card-bg-end: rgba(255, 255, 255, 0.4);
+    --history-card-border: rgba(255, 255, 255, 0.6);
+    --history-card-border-left: rgba(255, 255, 255, 0.6);
+    --history-card-shadow: 0 8px 16px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    --history-card-result: #1F2937;
+    --history-card-expression: #6B7280;
+    
+    --drag-handle-bg: rgba(107, 114, 128, 0.3);
+    --drag-handle-shadow: none;
+    
+    --backdrop-bg: rgba(248, 250, 252, 0.4);
+}
+
+/* 2. Reset / Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    height: 100vh;
+    height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: var(--bg-main);
+    background-image: var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3);
+    color: var(--text-number);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    touch-action: none;
+}
+
+/* Typography utilities */
+.font-display-result {
+    font-size: 56px;
+    line-height: 64px;
+    font-weight: 600;
+}
+
+.font-headline-sm {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+}
+
+.font-display-md {
+    font-size: 48px;
+    line-height: 56px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+}
+
+.font-label-md {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    outline: none;
+}
+
+/* 3. Background Overlays */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.02;
+    background-image: url('../assets/images/noise.svg');
+    mix-blend-mode: var(--noise-blend-mode);
+}
+
+.vignette-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: var(--vignette-shadow);
+    z-index: 1;
+    display: var(--display-vignette);
+}
+
+.radial-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--center-radial-bg);
+    z-index: 1;
+    display: var(--display-vignette);
+}
+
+/* 4. Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) 0 var(--space-xs) 0;
+    width: 100%;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.header-title {
+    font-size: 14.4px;
+    letter-spacing: 0.25em;
+    color: var(--text-header);
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.history-toggle, .theme-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--header-btn-bg-start) 0%, var(--header-btn-bg-end) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--header-btn-border);
+    border-top: 1px solid var(--header-btn-border-top);
+    box-shadow: var(--header-btn-shadow);
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    color: var(--text-header);
+}
+
+.history-toggle:hover, .theme-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--header-btn-hover-shadow);
+    background: linear-gradient(180deg, var(--header-btn-hover-bg-start) 0%, var(--header-btn-hover-bg-end) 100%);
+}
+
+.history-toggle:active, .theme-toggle:active {
+    transform: scale(0.92) translateY(0);
+}
+
+/* 5. Main Calculator Area */
+.calculator {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
+    gap: var(--space-lg);
+    width: 100%;
+    max-width: 28rem;
+    margin: 0 auto;
+    height: 100%;
+    max-height: 100dvh;
+    z-index: 10;
+    position: relative;
+    transition: filter 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+.calculator.dim-blur {
+    filter: blur(4px);
+    opacity: 0.6;
+}
+
+/* 6. Display Panel */
+.display {
+    background: linear-gradient(135deg, var(--glass-bg-start) 0%, var(--glass-bg-end) 100%);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid transparent;
+    border-top: 1px solid var(--glass-border-top);
+    border-left: 1px solid var(--glass-border-left);
+    box-shadow: var(--glass-shadow);
+    border-radius: 24px;
+    flex: 0 1 auto;
+    min-height: clamp(140px, 28vh, 260px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.display-glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, var(--display-glow-start), transparent, var(--display-glow-end));
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.expression-container {
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    margin-top: 4px;
+    padding-right: 8px;
+    text-align: right;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.expression-container::-webkit-scrollbar {
+    display: none;
+}
+
+.expression {
+    color: var(--text-expression);
+}
+
+.result-container {
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    padding-bottom: 8px;
+    padding-right: 8px;
+    text-align: right;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.result-container::-webkit-scrollbar {
+    display: none;
+}
+
+.result {
+    color: var(--text-number);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.05em;
+}
+
+/* 7. Keypad Grid */
+.keypad {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: var(--space-sm);
+    padding-bottom: var(--space-md);
+}
+
+/* 8. Calculator Keys */
+.key {
+    background: linear-gradient(180deg, var(--btn-bg-start) 0%, var(--btn-bg-end) 100%);
+    border: 1px solid transparent;
+    border-top: 1px solid var(--btn-border-top);
+    border-left: 1px solid var(--btn-border-left);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--btn-shadow);
+    border-radius: 22px;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-number);
+}
+
+.key::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.key:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--btn-hover-shadow);
+    background: linear-gradient(180deg, var(--btn-hover-bg-start) 0%, var(--btn-hover-bg-end) 100%);
+}
+
+.key:active {
+    transform: scale(0.96) translateY(0);
+    box-shadow: var(--btn-active-shadow);
+    background: linear-gradient(180deg, var(--btn-active-bg-start) 0%, var(--btn-active-bg-end) 100%);
+    border-top-color: transparent;
+}
+
+.key:active::after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 1;
+    transition: 0s;
+}
+
+/* 9. Key Variants */
+.operator-key {
+    border-radius: 24px;
+    text-shadow: var(--op-text-shadow);
+    padding-bottom: 4px;
+}
+
+.operator-key[data-key="÷"] {
+    --key-bg-start: var(--op-divide-bg-start);
+    --key-bg-end: var(--op-divide-bg-end);
+    --key-border: var(--op-divide-border);
+    --key-text: var(--op-divide-text);
+}
+.operator-key[data-key="×"] {
+    --key-bg-start: var(--op-multiply-bg-start);
+    --key-bg-end: var(--op-multiply-bg-end);
+    --key-border: var(--op-multiply-border);
+    --key-text: var(--op-multiply-text);
+}
+.operator-key[data-key="−"] {
+    --key-bg-start: var(--op-minus-bg-start);
+    --key-bg-end: var(--op-minus-bg-end);
+    --key-border: var(--op-minus-border);
+    --key-text: var(--op-minus-text);
+}
+.operator-key[data-key="+"] {
+    --key-bg-start: var(--op-plus-bg-start);
+    --key-bg-end: var(--op-plus-bg-end);
+    --key-border: var(--op-plus-border);
+    --key-text: var(--op-plus-text);
+}
+
+.operator-key[data-key="÷"],
+.operator-key[data-key="×"],
+.operator-key[data-key="−"],
+.operator-key[data-key="+"] {
+    background: linear-gradient(180deg, var(--key-bg-start) 0%, var(--key-bg-end) 100%);
+    border-top-color: var(--key-border);
+    color: var(--key-text);
+}
+
+.key[data-key="AC"] {
+    --func-bg-start: var(--ac-bg-start);
+    --func-bg-end: var(--ac-bg-end);
+    --func-border: var(--ac-border);
+    --func-text: var(--ac-text);
+}
+.key[data-key="backspace"] {
+    --func-bg-start: var(--backspace-bg-start);
+    --func-bg-end: var(--backspace-bg-end);
+    --func-border: var(--backspace-border);
+    --func-text: var(--backspace-text);
+}
+.key[data-key="%"] {
+    --func-bg-start: var(--percent-bg-start);
+    --func-bg-end: var(--percent-bg-end);
+    --func-border: var(--percent-border);
+    --func-text: var(--percent-text);
+}
+
+.key[data-key="AC"],
+.key[data-key="backspace"],
+.key[data-key="%"] {
+    background: linear-gradient(180deg, var(--func-bg-start) 0%, var(--func-bg-end) 100%);
+    border-top-color: var(--func-border);
+    color: var(--func-text);
+}
+
+.key[data-key="0"] {
+    grid-column: span 2;
+    justify-content: flex-start;
+    padding-left: 32px;
+}
+
+/* 10. Hero '=' Button */
+.equal-key {
+    background: linear-gradient(180deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--hero-text);
+    box-shadow: var(--hero-shadow);
+    border-radius: 9999px;
+    z-index: 20;
+    animation: pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.equal-key:hover {
+    box-shadow: var(--hero-hover-shadow);
+    background: linear-gradient(180deg, var(--hero-hover-bg-start) 0%, var(--hero-hover-bg-end) 100%);
+    transform: translateY(-2px);
+}
+
+.equal-key:active {
+    transform: scale(0.96);
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: var(--hero-pulse-shadow-1); }
+    50% { box-shadow: var(--hero-pulse-shadow-2); }
+}
+
+/* 11. History Overlay & Backdrop */
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: var(--backdrop-bg);
+    backdrop-filter: blur(12px);
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-out;
+}
+
+.backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.history-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 75%;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0, 0.67, 0);
+}
+
+.history-sheet.open {
+    transform: translateY(0);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+.history-panel {
+    background: linear-gradient(180deg, var(--history-panel-bg-start) 0%, var(--history-panel-bg-end) 100%);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-top: 1px solid var(--history-panel-border);
+    box-shadow: var(--history-panel-shadow);
+    height: 100%;
+    width: 100%;
+    max-width: 28rem;
+    margin: 0 auto;
+    border-radius: 36px 36px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.history-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(194, 42, 255, 0.05), rgba(2, 107, 210, 0.1));
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 12. History Drag Handle */
+.drag-handle-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-sm);
+    padding-bottom: var(--space-xs);
+    position: relative;
+    z-index: 10;
+    cursor: grab;
+}
+
+.drag-handle-container:active {
+    cursor: grabbing;
+}
+
+.drag-handle {
+    width: 48px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--drag-handle-bg);
+    box-shadow: var(--drag-handle-shadow);
+}
+
+/* 13. History Header */
+.history-header {
+    padding: var(--space-sm) var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.history-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.history-header h2 {
+    color: var(--text-number);
+}
+
+.history-close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--header-btn-bg-start) 0%, var(--header-btn-bg-end) 100%);
+    box-shadow: var(--header-btn-shadow);
+    color: var(--text-number);
+    border: 1px solid var(--header-btn-border);
+}
+
+.history-clear-btn {
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--ac-bg-start) 0%, var(--ac-bg-end) 100%);
+    color: var(--ac-text);
+    border-top: 1px solid var(--ac-border);
+    transition: transform 0.2s;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.history-clear-icon {
+    font-size: 16px;
+}
+
+/* 14. History Cards */
+.history-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 var(--space-md) var(--space-lg) var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    position: relative;
+    z-index: 10;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.history-card {
+    background: linear-gradient(180deg, var(--history-card-bg-start) 0%, var(--history-card-bg-end) 100%);
+    border: 1px solid transparent;
+    border-top: 1px solid var(--history-card-border);
+    border-left: 1px solid var(--history-card-border-left);
+    backdrop-filter: blur(16px);
+    border-radius: 22px;
+    box-shadow: var(--history-card-shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.history-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.history-card-expression {
+    color: var(--history-card-expression);
+}
+
+.history-card-time {
+    color: var(--history-card-expression);
+}
+
+.history-card-result {
+    color: var(--history-card-result);
+    font-size: 30px;
+    line-height: 36px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+}
+
+.empty-history {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    opacity: 0.8;
+    padding: var(--space-xl);
+}
+
+.empty-history h3 {
+    color: var(--text-number);
+    margin-bottom: var(--space-xs);
+}
+
+.empty-history p {
+    color: var(--history-card-expression);
+}
