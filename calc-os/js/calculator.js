@@ -28,10 +28,15 @@ function initCalculator() {
     displayResult = document.getElementById('display-result');
     displayContainer = document.querySelector('.display');
     
-    const keys = document.querySelectorAll('.key');
-    keys.forEach(key => {
-        key.addEventListener('click', () => processCalculatorKey(key.getAttribute('data-key')));
-    });
+    const keypad = document.querySelector('.keypad');
+    if (keypad) {
+        keypad.addEventListener('click', (e) => {
+            const keyBtn = e.target.closest('.key');
+            if (keyBtn) {
+                processCalculatorKey(keyBtn.getAttribute('data-key'));
+            }
+        });
+    }
     
     // Initial display update
     updateDisplay();
@@ -91,17 +96,41 @@ function handleDigit(digit) {
         resetCalculator();
     }
     
+    let proposedInput;
     if (currentInput.endsWith('%')) {
-        currentInput = digit;
+        proposedInput = digit;
     } else if (currentInput === "0") {
-        currentInput = digit;
+        proposedInput = digit;
     } else if (currentInput === "-0") {
-        currentInput = "-" + digit;
+        proposedInput = "-" + digit;
     } else {
-        currentInput += digit;
+        proposedInput = currentInput + digit;
     }
     
+    // Guard 1: Safe Numeric Precision
+    let numVal = parseFloat(proposedInput);
+    if (numVal > Number.MAX_SAFE_INTEGER || numVal < Number.MIN_SAFE_INTEGER) {
+        return;
+    }
+    
+    // Exceeds JS 64-bit float mantissa capacity
+    if (proposedInput.replace(/[^0-9]/g, '').length > 16) {
+        return;
+    }
+    
+    let previousInput = currentInput;
+    currentInput = proposedInput;
+    
     updateDisplay();
+    
+    // Guard 2: Display boundaries
+    if (displayResult) {
+        const container = displayResult.parentElement;
+        if (displayResult.scrollWidth > container.clientWidth && displayResult.style.fontSize === '35px') {
+            currentInput = previousInput;
+            updateDisplay();
+        }
+    }
 }
 
 function handleDecimal() {
@@ -410,15 +439,21 @@ function adjustFontSize() {
     // Reset to default sizing
     displayResult.style.fontSize = '';
     
-    let fontSize = 80; // Baseline from CSS
-    const minFontSize = 35;
-    
     const container = displayResult.parentElement;
+    const scrollWidth = displayResult.scrollWidth;
+    const clientWidth = container.clientWidth;
     
-    // Safely reduce font size until text fits or min size is reached
-    while (displayResult.scrollWidth > container.clientWidth && fontSize > minFontSize) {
-        fontSize -= 2;
+    if (scrollWidth > clientWidth) {
+        // One primary size estimation based on ratio
+        const ratio = clientWidth / scrollWidth;
+        let fontSize = Math.max(35, Math.floor(80 * ratio));
         displayResult.style.fontSize = fontSize + 'px';
+        
+        // One small bounded refinement pass if it still slightly overflows
+        if (displayResult.scrollWidth > container.clientWidth && fontSize > 35) {
+            fontSize = Math.max(35, fontSize - 2);
+            displayResult.style.fontSize = fontSize + 'px';
+        }
     }
     
     // Auto-scroll to keep newest digits visible

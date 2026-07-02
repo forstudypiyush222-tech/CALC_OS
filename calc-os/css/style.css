@@ -389,7 +389,6 @@ header {
     max-width: 28rem;
     margin: 0 auto;
     height: 100%;
-    max-height: 100dvh;
     z-index: 10;
     position: relative;
     transition: filter 0.5s ease-out, opacity 0.5s ease-out;
@@ -908,4 +907,23 @@ button:focus-visible, .history-card:focus-visible {
 
 body.light button:focus-visible, body.light .history-card:focus-visible {
     box-shadow: 0 0 0 2px var(--bg-main), 0 0 0 4px #007AFF, 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+/* 12. Responsive Scaling */
+@media (min-width: 480px) {
+    .calculator {
+        max-width: 29rem; /* Small increase for large phones */
+    }
+}
+
+@media (min-width: 768px) {
+    .calculator {
+        max-width: 32rem; /* ~14% increase for tablets */
+    }
+}
+
+@media (min-width: 1024px) {
+    .calculator {
+        max-width: 34rem; /* Final small increase for desktop */
+    }
 }

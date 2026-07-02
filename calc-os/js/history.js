@@ -24,6 +24,7 @@ const MAX_HISTORY_ITEMS = 100;
 let startY = 0;
 let currentY = 0;
 let isDragging = false;
+let isAnimating = false; // Prevents overlapping animations
 // Height threshold to trigger dismissal (e.g. 150px)
 const DISMISS_THRESHOLD = 150;
 
@@ -71,7 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
  * Opens the history bottom sheet
  */
 function openHistory() {
+    if (isAnimating) return;
     if (!historySheet || !backdrop || !calculatorContainer) return;
+    if (historySheet.classList.contains('open')) return;
+    
+    isAnimating = true;
     
     // Make backdrop visible and interactive
     backdrop.classList.add('visible');
@@ -87,13 +92,21 @@ function openHistory() {
     if (closeBtn) {
         closeBtn.focus();
     }
+    
+    setTimeout(() => {
+        isAnimating = false;
+    }, 400); // 400ms CSS transition
 }
 
 /**
  * Closes the history bottom sheet
  */
 function closeHistory() {
+    if (isAnimating) return;
     if (!historySheet || !backdrop || !calculatorContainer) return;
+    if (!historySheet.classList.contains('open')) return;
+    
+    isAnimating = true;
     
     if (historyToggleBtn) {
         historyToggleBtn.focus();
@@ -111,6 +124,10 @@ function closeHistory() {
     
     // Remove dim/blur effect from calculator
     calculatorContainer.classList.remove('dim-blur');
+    
+    setTimeout(() => {
+        isAnimating = false;
+    }, 400);
 }
 
 /**
@@ -270,13 +287,26 @@ function createHistoryCardElement(entry, animateEnter = false) {
     
     const timeStr = new Date(entry.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
-    btn.innerHTML = `
-        <div class="history-card-header">
-            <span class="history-card-expression font-label-md">${entry.expression}</span>
-            <span class="history-card-time font-label-md">${timeStr}</span>
-        </div>
-        <div class="history-card-result">${addCommasForHistory(entry.result)}</div>
-    `;
+    const header = document.createElement('div');
+    header.className = 'history-card-header';
+    
+    const exprSpan = document.createElement('span');
+    exprSpan.className = 'history-card-expression font-label-md';
+    exprSpan.textContent = entry.expression;
+    
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'history-card-time font-label-md';
+    timeSpan.textContent = timeStr;
+    
+    header.appendChild(exprSpan);
+    header.appendChild(timeSpan);
+    
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'history-card-result';
+    resultDiv.textContent = addCommasForHistory(entry.result);
+    
+    btn.appendChild(header);
+    btn.appendChild(resultDiv);
     
     if (animateEnter) {
         requestAnimationFrame(() => {
@@ -336,6 +366,7 @@ function handleHistoryListClick(e) {
 }
 
 function confirmClearHistory() {
+    if (isAnimating) return;
     if (historyData.length === 0) return;
     
     const isConfirmed = window.confirm("Are you sure you want to clear all history?");
@@ -345,11 +376,13 @@ function confirmClearHistory() {
         
         const list = document.getElementById('history-list');
         if (list) {
+            isAnimating = true;
             const cards = list.querySelectorAll('.history-card');
             cards.forEach(card => card.classList.add('history-card-exit'));
             
             setTimeout(() => {
                 renderHistoryList();
+                isAnimating = false;
             }, 250);
         }
     }
