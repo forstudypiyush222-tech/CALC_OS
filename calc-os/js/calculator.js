@@ -17,6 +17,7 @@ let isError = false;
 // DOM Elements
 let displayExpression;
 let displayResult;
+let displayContainer;
 
 /**
  * Initialize calculator logic
@@ -25,6 +26,7 @@ let displayResult;
 function initCalculator() {
     displayExpression = document.getElementById('display-expression');
     displayResult = document.getElementById('display-result');
+    displayContainer = document.querySelector('.display');
     
     const keys = document.querySelectorAll('.key');
     keys.forEach(key => {
@@ -321,6 +323,14 @@ function addCommas(str) {
 function updateDisplay(showingResult = false) {
     if (!displayExpression || !displayResult) return;
     
+    if (displayContainer) {
+        if (showingResult && !isError) {
+            displayContainer.classList.add('result-focus');
+        } else {
+            displayContainer.classList.remove('result-focus');
+        }
+    }
+    
     // Prevent wrapping to maintain single line scaling
     displayExpression.style.whiteSpace = 'nowrap';
     displayResult.style.whiteSpace = 'nowrap';
@@ -432,6 +442,10 @@ function restoreCalculation(exprStr, resStr) {
     // Forcibly update DOM to match the exact saved state
     displayExpression.textContent = exprStr;
     displayResult.textContent = addCommas(formatNumber(parseFloat(resStr)));
+    
+    if (displayContainer) {
+        displayContainer.classList.add('result-focus');
+    }
     
     adjustFontSize();
 }
