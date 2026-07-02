@@ -30,7 +30,7 @@ function initCalculator() {
     
     const keys = document.querySelectorAll('.key');
     keys.forEach(key => {
-        key.addEventListener('click', () => handleKey(key.getAttribute('data-key')));
+        key.addEventListener('click', () => processCalculatorKey(key.getAttribute('data-key')));
     });
     
     // Initial display update
@@ -38,16 +38,29 @@ function initCalculator() {
 }
 
 /**
- * Main key event router
+ * Main key event router for calculator engine
  */
-function handleKey(key) {
+function processCalculatorKey(key) {
+    // Map keyboard inputs to engine tokens
+    const keyMap = {
+        '*': '×',
+        '/': '÷',
+        '-': '−',
+        'Enter': '=',
+        'Backspace': 'backspace',
+        'Delete': 'AC',
+        'Escape': 'AC'
+    };
+    
+    const mappedKey = keyMap[key] || key;
+
     if (isError) {
-        if (key === 'AC') {
+        if (mappedKey === 'AC') {
             resetCalculator();
             return;
         }
         // If typing a new digit or decimal after error, reset and start new
-        if (/[0-9.]/.test(key)) {
+        if (/[0-9.]/.test(mappedKey)) {
             resetCalculator();
         } else {
             // Ignore additional operators while in error state
@@ -55,21 +68,21 @@ function handleKey(key) {
         }
     }
 
-    if (/[0-9]/.test(key)) {
-        handleDigit(key);
-    } else if (key === '.') {
+    if (/[0-9]/.test(mappedKey)) {
+        handleDigit(mappedKey);
+    } else if (mappedKey === '.') {
         handleDecimal();
-    } else if (key === 'AC') {
+    } else if (mappedKey === 'AC') {
         resetCalculator();
-    } else if (key === 'backspace') {
+    } else if (mappedKey === 'backspace') {
         handleBackspace();
-    } else if (key === '%') {
+    } else if (mappedKey === '%') {
         handlePercentage();
-    } else if (key === '=') {
+    } else if (mappedKey === '=') {
         calculateResult();
-    } else {
-        // Operators: +, −, ×, ÷
-        handleOperator(key);
+    } else if (['+', '−', '×', '÷'].includes(mappedKey)) {
+        // Operators
+        handleOperator(mappedKey);
     }
 }
 

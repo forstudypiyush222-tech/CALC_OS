@@ -30,11 +30,11 @@
         
         <!-- Header -->
         <header>
-            <button id="history-toggle" class="history-toggle" aria-label="Open history">
+            <button type="button" id="history-toggle" class="history-toggle" aria-label="Open history">
                 <span class="material-symbols-outlined">history</span>
             </button>
             <h1 class="header-title">CALC_OS</h1>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
                 <span id="theme-icon" class="material-symbols-outlined">dark_mode</span>
             </button>
         </header>
@@ -53,31 +53,31 @@
 
             <!-- Keypad -->
             <section class="keypad" aria-label="Calculator keypad">
-                <button class="key operator-key font-headline-sm" data-key="AC">AC</button>
-                <button class="key operator-key font-headline-sm" data-key="backspace">
+                <button type="button" class="key operator-key font-headline-sm" data-key="AC" aria-label="All clear">AC</button>
+                <button type="button" class="key operator-key font-headline-sm" data-key="backspace" aria-label="Backspace">
                     <span class="material-symbols-outlined">backspace</span>
                 </button>
-                <button class="key operator-key font-headline-sm" data-key="%">%</button>
-                <button class="key operator-key font-display-md" data-key="÷">÷</button>
+                <button type="button" class="key operator-key font-headline-sm" data-key="%" aria-label="Percentage">%</button>
+                <button type="button" class="key operator-key font-display-md" data-key="÷" aria-label="Divide">÷</button>
 
-                <button class="key number-key font-headline-sm" data-key="7">7</button>
-                <button class="key number-key font-headline-sm" data-key="8">8</button>
-                <button class="key number-key font-headline-sm" data-key="9">9</button>
-                <button class="key operator-key font-display-md" data-key="×">×</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="7">7</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="8">8</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="9">9</button>
+                <button type="button" class="key operator-key font-display-md" data-key="×" aria-label="Multiply">×</button>
 
-                <button class="key number-key font-headline-sm" data-key="4">4</button>
-                <button class="key number-key font-headline-sm" data-key="5">5</button>
-                <button class="key number-key font-headline-sm" data-key="6">6</button>
-                <button class="key operator-key font-display-md" data-key="−">−</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="4">4</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="5">5</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="6">6</button>
+                <button type="button" class="key operator-key font-display-md" data-key="−" aria-label="Subtract">−</button>
 
-                <button class="key number-key font-headline-sm" data-key="1">1</button>
-                <button class="key number-key font-headline-sm" data-key="2">2</button>
-                <button class="key number-key font-headline-sm" data-key="3">3</button>
-                <button class="key operator-key font-display-md" data-key="+">+</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="1">1</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="2">2</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="3">3</button>
+                <button type="button" class="key operator-key font-display-md" data-key="+" aria-label="Add">+</button>
 
-                <button class="key number-key font-headline-sm" data-key="0">0</button>
-                <button class="key number-key font-headline-sm" data-key=".">.</button>
-                <button class="key equal-key font-display-md" data-key="=">=</button>
+                <button type="button" class="key number-key font-headline-sm" data-key="0">0</button>
+                <button type="button" class="key number-key font-headline-sm" data-key=".">.</button>
+                <button type="button" class="key equal-key font-display-md" data-key="=" aria-label="Calculate result">=</button>
             </section>
     </div>
 
@@ -93,12 +93,12 @@
             
             <header class="history-header">
                 <div class="history-header-left">
-                    <button id="history-close-btn" class="history-close-btn" aria-label="Close history">
+                    <button type="button" id="history-close-btn" class="history-close-btn" aria-label="Close history">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                     <h2 class="font-headline-sm">History</h2>
                 </div>
-                <button id="history-clear-btn" class="history-clear-btn" aria-label="Clear history">
+                <button type="button" id="history-clear-btn" class="history-clear-btn" aria-label="Clear history">
                     <span class="material-symbols-outlined history-clear-icon">delete</span>
                     Clear
                 </button>

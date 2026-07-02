@@ -261,6 +261,7 @@ function renderHistoryList() {
 
 function createHistoryCardElement(entry, animateEnter = false) {
     const btn = document.createElement('button');
+    btn.type = 'button';
     btn.className = 'history-card' + (animateEnter ? ' history-card-enter' : '');
     btn.setAttribute('data-id', entry.id);
     btn.setAttribute('data-expr', entry.expression);
@@ -350,6 +351,44 @@ function confirmClearHistory() {
             setTimeout(() => {
                 renderHistoryList();
             }, 250);
+        }
+    }
+}
+
+function isHistoryOpen() {
+    return historySheet && historySheet.classList.contains('open');
+}
+
+function processHistoryKey(e) {
+    if (e.key === 'Escape') {
+        closeHistory();
+        e.preventDefault();
+        return;
+    }
+    
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        const cards = Array.from(document.querySelectorAll('.history-card'));
+        if (cards.length === 0) return;
+        
+        const active = document.activeElement;
+        const currentIndex = cards.indexOf(active);
+        
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (currentIndex < cards.length - 1) {
+                cards[currentIndex + 1].focus();
+            } else if (currentIndex === -1) {
+                cards[0].focus();
+            }
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (currentIndex > 0) {
+                cards[currentIndex - 1].focus();
+            } else if (currentIndex === 0) {
+                if (closeBtn) closeBtn.focus();
+            } else if (currentIndex === -1) {
+                cards[cards.length - 1].focus();
+            }
         }
     }
 }
