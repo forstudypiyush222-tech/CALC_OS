@@ -13,6 +13,12 @@ let backdrop;
 let calculatorContainer;
 let closeBtn;
 let dragHandleContainer;
+let historyToggleBtn;
+
+// State Management
+let historyData = [];
+const HISTORY_STORAGE_KEY = 'calc_os_history';
+const MAX_HISTORY_ITEMS = 100;
 
 // Gesture tracking variables
 let startY = 0;
@@ -30,6 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
     calculatorContainer = document.getElementById('calculator-container');
     closeBtn = document.getElementById('history-close-btn');
     dragHandleContainer = document.getElementById('drag-handle-container');
+    historyToggleBtn = document.getElementById('history-toggle');
+    
+    if (historySheet) {
+        historySheet.inert = true;
+    }
     
     if (closeBtn) {
         closeBtn.addEventListener('click', closeHistory);
@@ -39,10 +50,21 @@ document.addEventListener('DOMContentLoaded', () => {
         backdrop.addEventListener('click', closeHistory);
     }
     
-    // Wire optional swipe-down dismiss
     if (dragHandleContainer) {
         initDragGestures();
     }
+    
+    const clearBtn = document.getElementById('history-clear-btn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', confirmClearHistory);
+    }
+    
+    const historyList = document.getElementById('history-list');
+    if (historyList) {
+        historyList.addEventListener('click', handleHistoryListClick);
+    }
+    
+    initHistory();
 });
 
 /**
@@ -55,11 +77,16 @@ function openHistory() {
     backdrop.classList.add('visible');
     
     // Slide up history sheet
+    historySheet.inert = false;
     historySheet.classList.add('open');
     historySheet.setAttribute('aria-hidden', 'false');
     
     // Apply dim/blur effect to calculator in background
     calculatorContainer.classList.add('dim-blur');
+    
+    if (closeBtn) {
+        closeBtn.focus();
+    }
 }
 
 /**
@@ -67,6 +94,12 @@ function openHistory() {
  */
 function closeHistory() {
     if (!historySheet || !backdrop || !calculatorContainer) return;
+    
+    if (historyToggleBtn) {
+        historyToggleBtn.focus();
+    }
+    
+    historySheet.inert = true;
     
     // Hide and disable backdrop
     backdrop.classList.remove('visible');
@@ -146,4 +179,177 @@ function onDragEnd() {
     // Reset values
     startY = 0;
     currentY = 0;
+}
+
+// --------------------------------------------------
+// History System (Phase-3)
+// --------------------------------------------------
+
+function initHistory() {
+    try {
+        const stored = localStorage.getItem(HISTORY_STORAGE_KEY);
+        if (stored) {
+            historyData = JSON.parse(stored);
+        }
+    } catch (e) {
+        console.error("Failed to load history from LocalStorage", e);
+        historyData = [];
+    }
+    
+    renderHistoryList();
+}
+
+function saveToLocalStorage() {
+    try {
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(historyData));
+    } catch (e) {
+        console.error("Failed to save history to LocalStorage", e);
+    }
+}
+
+/**
+ * Called by calculator.js upon '=' completion.
+ */
+function saveHistoryEntry(expression, result) {
+    if (!expression || !result) return;
+    
+    // Prevent consecutive duplicate expressions
+    if (historyData.length > 0 && historyData[0].expression === expression) {
+        return;
+    }
+    
+    const entry = {
+        id: crypto.randomUUID ? crypto.randomUUID() : (Date.now() + Math.random().toString(36).slice(2)),
+        expression: expression,
+        result: result,
+        timestamp: Date.now()
+    };
+    
+    historyData.unshift(entry);
+    
+    if (historyData.length > MAX_HISTORY_ITEMS) {
+        historyData.pop();
+    }
+    
+    saveToLocalStorage();
+    addHistoryCardToDOM(entry);
+}
+
+function renderHistoryList() {
+    const list = document.getElementById('history-list');
+    if (!list) return;
+    
+    if (historyData.length === 0) {
+        list.innerHTML = `
+            <div class="empty-history">
+                <h3 class="font-headline-sm">No History Yet</h3>
+                <p class="font-label-md">Your completed calculations will appear here.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    list.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    
+    historyData.forEach(entry => {
+        fragment.appendChild(createHistoryCardElement(entry));
+    });
+    
+    list.appendChild(fragment);
+}
+
+function createHistoryCardElement(entry, animateEnter = false) {
+    const btn = document.createElement('button');
+    btn.className = 'history-card' + (animateEnter ? ' history-card-enter' : '');
+    btn.setAttribute('data-id', entry.id);
+    btn.setAttribute('data-expr', entry.expression);
+    btn.setAttribute('data-res', entry.result);
+    btn.setAttribute('aria-label', `Restore calculation: ${entry.expression} equals ${entry.result}`);
+    
+    const timeStr = new Date(entry.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    btn.innerHTML = `
+        <div class="history-card-header">
+            <span class="history-card-expression font-label-md">${entry.expression}</span>
+            <span class="history-card-time font-label-md">${timeStr}</span>
+        </div>
+        <div class="history-card-result">${addCommasForHistory(entry.result)}</div>
+    `;
+    
+    if (animateEnter) {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                btn.classList.add('history-card-enter-active');
+                setTimeout(() => {
+                    btn.classList.remove('history-card-enter', 'history-card-enter-active');
+                }, 250);
+            });
+        });
+    }
+    
+    return btn;
+}
+
+function addCommasForHistory(str) {
+    if (str === "Error" || str === "-") return str;
+    let parts = str.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join('.');
+}
+
+function addHistoryCardToDOM(entry) {
+    const list = document.getElementById('history-list');
+    if (!list) return;
+    
+    const emptyState = list.querySelector('.empty-history');
+    if (emptyState) {
+        list.removeChild(emptyState);
+    }
+    
+    const card = createHistoryCardElement(entry, true);
+    list.insertBefore(card, list.firstChild);
+    
+    const cards = list.querySelectorAll('.history-card');
+    if (cards.length > MAX_HISTORY_ITEMS) {
+        list.removeChild(cards[cards.length - 1]);
+    }
+}
+
+function handleHistoryListClick(e) {
+    const card = e.target.closest('.history-card');
+    if (!card) return;
+    
+    const expr = card.getAttribute('data-expr');
+    const res = card.getAttribute('data-res');
+    
+    card.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+        card.style.transform = '';
+        
+        if (typeof restoreCalculation === 'function') {
+            restoreCalculation(expr, res);
+            closeHistory();
+        }
+    }, 100);
+}
+
+function confirmClearHistory() {
+    if (historyData.length === 0) return;
+    
+    const isConfirmed = window.confirm("Are you sure you want to clear all history?");
+    if (isConfirmed) {
+        historyData = [];
+        saveToLocalStorage();
+        
+        const list = document.getElementById('history-list');
+        if (list) {
+            const cards = list.querySelectorAll('.history-card');
+            cards.forEach(card => card.classList.add('history-card-exit'));
+            
+            setTimeout(() => {
+                renderHistoryList();
+            }, 250);
+        }
+    }
 }

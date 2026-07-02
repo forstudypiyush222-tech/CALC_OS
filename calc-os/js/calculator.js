@@ -76,9 +76,12 @@ function handleDigit(digit) {
         resetCalculator();
     }
     
-    // Prevent multiple leading zeros, but allow '0' or '0.x'
-    if (currentInput === '0' && digit !== '.') {
+    if (currentInput.endsWith('%')) {
         currentInput = digit;
+    } else if (currentInput === "0") {
+        currentInput = digit;
+    } else if (currentInput === "-0") {
+        currentInput = "-" + digit;
     } else {
         currentInput += digit;
     }
@@ -90,12 +93,15 @@ function handleDecimal() {
     if (isCalculated) {
         resetCalculator();
         currentInput = "0.";
-    } else if (currentInput === "" || currentInput === "-") {
-        currentInput += "0.";
-    } else if (!currentInput.includes('.')) {
-        currentInput += '.';
+    } else {
+        if (currentInput.endsWith('%')) {
+            currentInput = "0.";
+        } else if (currentInput === "" || currentInput === "-") {
+            currentInput += "0.";
+        } else if (!currentInput.includes('.')) {
+            currentInput += ".";
+        }
     }
-    
     updateDisplay();
 }
 
@@ -126,6 +132,9 @@ function handleOperator(op) {
             tokens.push("0");
             tokens.push(op);
             currentInput = "";
+        } else if (tokens.length > 0 && !isOperator(tokens[tokens.length - 1])) {
+            // Chaining after calculation / restoration
+            tokens.push(op);
         }
     } else {
         tokens.push(currentInput);
@@ -138,19 +147,15 @@ function handleOperator(op) {
 
 function handlePercentage() {
     if (currentInput !== "" && currentInput !== "-") {
-        let val = parseFloat(currentInput);
-        if (!isNaN(val)) {
-            currentInput = formatNumber(val / 100);
+        if (!currentInput.endsWith('%')) {
+            currentInput += "%";
             updateDisplay();
         }
     } else if (isCalculated && lastResult !== null) {
-        let val = parseFloat(lastResult);
-        if (!isNaN(val)) {
-            currentInput = formatNumber(val / 100);
-            tokens = [];
-            isCalculated = false;
-            updateDisplay();
-        }
+        currentInput = formatNumber(parseFloat(lastResult) / 100);
+        tokens = [];
+        isCalculated = false;
+        updateDisplay();
     }
 }
 
@@ -213,6 +218,10 @@ function calculateResult() {
     } else {
         lastResult = res;
         isCalculated = true;
+        
+        if (typeof saveHistoryEntry === 'function') {
+            saveHistoryEntry(evalTokens.join(' '), res);
+        }
     }
     
     updateDisplay(true);
@@ -232,13 +241,19 @@ function evaluate(exprTokens) {
         let token = exprTokens[i];
         if (token === '×' || token === '÷') {
             let left = parseFloat(temp.pop());
-            let right = parseFloat(exprTokens[++i]);
+            let rightToken = exprTokens[++i];
+            let isPct = typeof rightToken === 'string' && rightToken.endsWith('%');
+            let rightVal = parseFloat(rightToken);
             
-            if (token === '÷' && right === 0) {
-                return "Error"; // Division by zero
+            if (isPct) {
+                rightVal = rightVal / 100;
             }
             
-            let val = token === '×' ? left * right : left / right;
+            if (token === '÷' && rightVal === 0) {
+                return "Error"; 
+            }
+            
+            let val = token === '×' ? left * rightVal : left / rightVal;
             temp.push(val);
         } else {
             temp.push(token);
@@ -247,9 +262,19 @@ function evaluate(exprTokens) {
     
     // Pass 2: Addition and Subtraction
     let result = parseFloat(temp[0]);
+    if (typeof temp[0] === 'string' && temp[0].endsWith('%')) {
+        result = parseFloat(temp[0]) / 100;
+    }
+    
     for (let i = 1; i < temp.length; i += 2) {
         let op = temp[i];
-        let nextVal = parseFloat(temp[i+1]);
+        let nextToken = temp[i+1];
+        let isPct = typeof nextToken === 'string' && nextToken.endsWith('%');
+        let nextVal = parseFloat(nextToken);
+        
+        if (isPct) {
+            nextVal = (result * nextVal) / 100;
+        }
         
         if (op === '+') {
             result += nextVal;
@@ -259,7 +284,7 @@ function evaluate(exprTokens) {
     }
     
     if (isNaN(result) || !isFinite(result)) {
-        return "Error"; // Invalid expression fallback
+        return "Error"; 
     }
     
     return formatNumber(result);
@@ -315,13 +340,13 @@ function updateDisplay(showingResult = false) {
     }
     
     if (showingResult) {
-        // Strip trailing operators for clean display (e.g. '5 + =' -> '5 =')
+        // Strip trailing operators for clean display
         let finalTokens = [...evalTokens];
         if (finalTokens.length > 0 && isOperator(finalTokens[finalTokens.length - 1])) {
             finalTokens.pop();
         }
-        displayExpression.textContent = finalTokens.join(' ').trim() + " =";
-        displayResult.textContent = addCommas(formatNumber(parseFloat(lastResult))); // format to clear -0
+        displayExpression.textContent = finalTokens.join(' ').trim();
+        displayResult.textContent = addCommas(formatNumber(parseFloat(lastResult))); 
     } else {
         displayExpression.textContent = exprStr.trim();
         
@@ -332,8 +357,8 @@ function updateDisplay(showingResult = false) {
             if (isOperator(temp[temp.length - 1])) {
                 temp.pop();
             }
-            if (temp.length === 1 && currentInput !== "" && currentInput !== "-") {
-                liveResult = currentInput;
+            if (temp.length === 1 && temp[0] === "-") {
+                liveResult = "-";
             } else if (temp.length > 0) {
                 let res = evaluate(temp);
                 liveResult = res === "Error" ? "Error" : res;
@@ -386,4 +411,27 @@ function adjustFontSize() {
     } else {
         exprContainer.scrollLeft = 0;
     }
+}
+
+/**
+ * Restores the calculator state from a history card.
+ * Acts as if the user JUST hit '=' on that expression.
+ */
+function restoreCalculation(exprStr, resStr) {
+    if (!displayExpression || !displayResult) return;
+    
+    // Reset internal state completely
+    tokens = [];
+    currentInput = "";
+    isError = false;
+    
+    // Set exactly to the saved result
+    lastResult = resStr;
+    isCalculated = true;
+    
+    // Forcibly update DOM to match the exact saved state
+    displayExpression.textContent = exprStr;
+    displayResult.textContent = addCommas(formatNumber(parseFloat(resStr)));
+    
+    adjustFontSize();
 }

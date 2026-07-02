@@ -816,6 +816,30 @@ header {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.history-card:active {
+    transform: scale(0.98);
+}
+
+.history-card-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.history-card-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 250ms ease-out, transform 250ms ease-out;
+}
+
+.history-card-exit {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 250ms ease-in, transform 250ms ease-in;
 }
 
 .history-card-header {
